@@ -1,90 +1,29 @@
 # Personal DigiLocker
 
-A simple full-stack personal document locker with file upload, document extraction, and a chat assistant for asking questions about uploaded IDs such as Aadhaar, PAN, and passport details.
+Personal DigiLocker is a full-stack document vault for storing personal ID files, extracting key fields, and asking questions about uploaded documents through a chat assistant.
+
+## Features
+
+- Upload PDF, PNG, JPG, and JPEG documents
+- Extract fields such as name, date of birth, ID number, address, gender, expiry, and issuer
+- View uploaded documents inside the app
+- Ask questions like "What is my Aadhaar number?" or "When does my passport expire?"
+- Fallback responses when AI or OCR is unavailable
+
+## Tech Stack
+
+- Frontend: React, Vite, Tailwind CSS, Zustand
+- Backend: FastAPI, SQLAlchemy, SQLite
+- OCR and parsing: EasyOCR, PyMuPDF
+- AI: Groq API
 
 ## Project Structure
 
-- `backend/` - FastAPI backend, SQLite database, OCR/extraction logic
-- `frontend/` - React + Vite frontend
+- `frontend/` - React client
+- `backend/` - FastAPI server
 
-## Local Setup
+## Notes
 
-### Backend
-
-```bash
-cd backend
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-uvicorn app.main:app --reload
-```
-
-### Frontend
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-## Environment Files
-
-Create these files locally and do not commit them:
-
-- `backend/.env`
-- `frontend/.env`
-
-Typical values:
-
-```env
-# backend/.env
-GROQ_API_KEY=your_key_here
-DATABASE_URL=sqlite:///./digilocker.db
-UPLOAD_DIR=uploads
-MAX_FILE_SIZE_MB=10
-PROCESSING_TIMEOUT_SECONDS=20
-```
-
-```env
-# frontend/.env
-VITE_API_URL=http://localhost:8000
-```
-
-## Push To GitHub
-
-From the project root:
-
-```bash
-git init
-git add .
-git commit -m "Initial commit"
-```
-
-Create a new empty repository on GitHub, then connect it:
-
-```bash
-git branch -M main
-git remote add origin https://github.com/YOUR_USERNAME/personal-digilocker.git
-git push -u origin main
-```
-
-## Future Updates
-
-After making changes:
-
-```bash
-git add .
-git commit -m "Describe your changes"
-git push
-```
-
-## Important Note
-
-Never commit:
-
-- API keys
-- `.env` files
-- local uploads
-- database files
-- virtual environments
-- `node_modules`
+- Uploaded files are stored locally
+- SQLite is used as the default database
+- OCR on image files may take longer than PDF text extraction

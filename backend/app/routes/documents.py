@@ -1,8 +1,8 @@
 import asyncio
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
-from fastapi import APIRouter, Depends, File, HTTPException, UploadFile, status
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile, status
 from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
@@ -18,7 +18,12 @@ router = APIRouter(prefix="/api/documents", tags=["documents"])
 
 
 @router.post("/upload", response_model=DocumentResponse, status_code=status.HTTP_201_CREATED)
-async def upload_document(file: UploadFile = File(...), db: Session = Depends(get_db)):
+async def upload_document(
+    file: UploadFile = File(...),
+    category: Optional[str] = Form(None),
+    sub_category: Optional[str] = Form(None),
+    db: Session = Depends(get_db),
+):
     if not file.filename:
         raise HTTPException(status_code=400, detail="No filename found.")
     try:
@@ -52,20 +57,24 @@ async def upload_document(file: UploadFile = File(...), db: Session = Depends(ge
         fields = fallback_fields
         raw_text = PROCESSING_TIMEOUT_TEXT
     except RuntimeError:
-        # If OCR model init fails (e.g. SSL download issue), still save file metadata.
         fields = fallback_fields
         raw_text = OCR_UNAVAILABLE_TEXT
     except Exception as exc:
         delete_file(stored_path)
         raise HTTPException(status_code=500, detail="Document processing failed.") from exc
 
+    # If user selected a sub_category, use it as doc_type if AI didn't detect one
+    effective_doc_type = fields.get("doc_type") or sub_category
+
     doc = Document(
         filename=file.filename,
         file_path=stored_path,
         mime_type=file.content_type or "application/octet-stream",
         file_size=file_size,
+        category=category,
+        sub_category=sub_category,
         raw_text=raw_text,
-        doc_type=fields.get("doc_type"),
+        doc_type=effective_doc_type,
         name=fields.get("name"),
         dob=fields.get("dob"),
         id_number=fields.get("id_number"),

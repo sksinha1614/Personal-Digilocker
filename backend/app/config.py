@@ -14,6 +14,7 @@ class Settings:
     upload_dir: str = os.getenv("UPLOAD_DIR", "uploads")
     max_file_size_mb: int = int(os.getenv("MAX_FILE_SIZE_MB", "10"))
     processing_timeout_seconds: int = int(os.getenv("PROCESSING_TIMEOUT_SECONDS", "20"))
+    jwt_secret: str = os.getenv("JWT_SECRET", "default-secret-change-me")
 
 
 settings = Settings()

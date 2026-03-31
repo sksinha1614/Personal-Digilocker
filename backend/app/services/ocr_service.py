@@ -44,7 +44,25 @@ def extract_text_from_pdf(file_path: str) -> str:
 def extract_text_from_image(file_path: str) -> str:
     if _reader is None and not init_ocr_reader():
         raise RuntimeError(_init_error or "Image OCR model could not be initialized.")
-    results = _reader.readtext(file_path, detail=0)
+        
+    try:
+        from PIL import Image, ImageEnhance
+        import io
+        
+        with Image.open(file_path) as img:
+            img = img.convert("L")  # Grayscale
+            img = ImageEnhance.Contrast(img).enhance(1.8)  # Boost contrast
+            img = ImageEnhance.Sharpness(img).enhance(1.2) # Modest sharpen
+            
+            img_byte_arr = io.BytesIO()
+            img.save(img_byte_arr, format="PNG")
+            image_payload = img_byte_arr.getvalue()
+    except Exception as e:
+        print(f"Warning: OCR image enhancement failed: {e}")
+        image_payload = file_path
+
+    # detail=0 drops bounding box info, we just want text strings. Let EasyOCR handle internal binarization too.
+    results = _reader.readtext(image_payload, detail=0)
     return join_chunks(results)
 
 

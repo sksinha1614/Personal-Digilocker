@@ -13,6 +13,8 @@ class Document(Base):
     file_path = Column(String(500), nullable=False, unique=True)
     mime_type = Column(String(100), nullable=False)
     file_size = Column(Integer, nullable=False)
+    category = Column(String(100), nullable=True)
+    sub_category = Column(String(100), nullable=True)
     raw_text = Column(Text, nullable=True)
     doc_type = Column(String(100), nullable=True)
     name = Column(String(255), nullable=True)

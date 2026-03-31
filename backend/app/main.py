@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import Base, engine
-from app.routes import chat, documents, extract
+from app.routes import auth, chat, documents, extract
 from app.services.ocr_service import init_ocr_reader
 
 Base.metadata.create_all(bind=engine)
@@ -20,7 +20,6 @@ app.add_middleware(
 
 @app.on_event("startup")
 def startup_event():
-    # Warm-up is best effort only; app should still boot if OCR model download fails.
     init_ocr_reader()
 
 
@@ -29,6 +28,7 @@ def health():
     return {"status": "ok"}
 
 
+app.include_router(auth.router)
 app.include_router(documents.router)
 app.include_router(chat.router)
 app.include_router(extract.router)

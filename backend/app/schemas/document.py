@@ -21,6 +21,8 @@ class DocumentResponse(ExtractedFields):
     file_path: str
     mime_type: str
     file_size: int
+    category: Optional[str] = None
+    sub_category: Optional[str] = None
     raw_text: Optional[str] = None
     created_at: datetime
 

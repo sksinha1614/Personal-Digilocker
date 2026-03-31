@@ -1,12 +1,15 @@
 const map = {
-  aadhaar: "bg-orange-500/20 text-orange-300 border-orange-400/50",
-  pan: "bg-blue-500/20 text-blue-300 border-blue-400/50",
-  marksheet: "bg-green-500/20 text-green-300 border-green-400/50",
-  other: "bg-gray-500/20 text-gray-200 border-gray-400/50",
+  aadhaar: "bg-amber-50 text-amber-700 border-amber-200",
+  pan: "bg-sky-50 text-sky-700 border-sky-200",
+  passport: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  marksheet: "bg-violet-50 text-violet-700 border-violet-200",
+  other: "bg-cream-200 text-vault-600 border-cream-400",
 };
 
 export default function Badge({ label = "Other" }) {
   const key = (label || "other").toLowerCase();
   const tone = map[key] || map.other;
-  return <span className={`rounded-full border px-2 py-1 text-xs ${tone}`}>{label}</span>;
+  return (
+    <span className={`vault-badge ${tone}`}>{label}</span>
+  );
 }

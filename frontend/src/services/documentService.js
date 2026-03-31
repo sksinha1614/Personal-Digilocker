@@ -1,8 +1,10 @@
 import api from "./api";
 
-export const uploadDocument = async (file, onUploadProgress) => {
+export const uploadDocument = async (file, category, subCategory, onUploadProgress) => {
   const formData = new FormData();
   formData.append("file", file);
+  if (category) formData.append("category", category);
+  if (subCategory) formData.append("sub_category", subCategory);
   const { data } = await api.post("/api/documents/upload", formData, {
     headers: { "Content-Type": "multipart/form-data" },
     onUploadProgress,

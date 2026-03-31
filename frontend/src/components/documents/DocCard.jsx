@@ -1,26 +1,44 @@
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Trash2, FileText } from "lucide-react";
 import Badge from "../ui/Badge";
-import Card from "../ui/Card";
 
 export default function DocCard({ doc, onView, onDelete }) {
   return (
-    <Card className="space-y-3">
+    <div className="vault-card p-5 space-y-3 group">
       <div className="flex items-center justify-between">
         <Badge label={doc.doc_type || "Other"} />
-        <p className="text-xs text-white/60">{new Date(doc.created_at).toLocaleDateString()}</p>
+        <p className="text-[11px] text-cream-500">
+          {new Date(doc.created_at).toLocaleDateString()}
+        </p>
       </div>
-      <div>
-        <h4 className="font-semibold">{doc.name || doc.filename}</h4>
-        <p className="text-sm text-white/70">{doc.id_number || "ID unavailable"}</p>
+
+      <div className="flex items-start gap-3">
+        <div className="w-9 h-9 rounded-lg bg-cream-200 flex items-center justify-center shrink-0">
+          <FileText className="w-4 h-4 text-vault-500" />
+        </div>
+        <div className="min-w-0">
+          <h4 className="font-semibold text-vault-800 text-sm truncate">
+            {doc.name || doc.filename}
+          </h4>
+          <p className="text-xs text-cream-500 truncate">
+            {doc.id_number || "ID unavailable"}
+          </p>
+        </div>
       </div>
-      <div className="flex gap-2">
-        <button onClick={() => onView(doc)} className="flex items-center gap-1 rounded-lg bg-white/10 px-3 py-1 text-sm">
-          <Eye size={14} /> View
+
+      <div className="flex gap-2 pt-1">
+        <button
+          onClick={() => onView(doc)}
+          className="vault-btn-outline py-1.5 px-3 text-xs"
+        >
+          <Eye size={13} /> View
         </button>
-        <button onClick={() => onDelete(doc.id)} className="flex items-center gap-1 rounded-lg bg-red-500/20 px-3 py-1 text-sm text-red-200">
-          <Trash2 size={14} /> Delete
+        <button
+          onClick={() => onDelete(doc.id)}
+          className="vault-btn-danger py-1.5 px-3 text-xs"
+        >
+          <Trash2 size={13} /> Delete
         </button>
       </div>
-    </Card>
+    </div>
   );
 }

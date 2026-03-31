@@ -8,3 +8,5 @@ groq
 python-dotenv
 pillow
 aiofiles
+PyJWT
+certifi

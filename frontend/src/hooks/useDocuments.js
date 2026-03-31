@@ -17,9 +17,9 @@ export default function useDocuments() {
     }
   };
 
-  const upload = async (file) => {
+  const upload = async (file, category, subCategory) => {
     setUploadProgress(0);
-    const data = await uploadDocument(file, (e) => {
+    const data = await uploadDocument(file, category, subCategory, (e) => {
       if (e.total) setUploadProgress(Math.round((e.loaded * 100) / e.total));
     });
     await refresh();

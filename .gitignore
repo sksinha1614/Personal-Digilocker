@@ -7,3 +7,7 @@ backend/digilocker.db
 __pycache__/
 *.pyc
 dist/
+.DS_Store
+backend/__pycache__/
+frontend/dist/
+*.log

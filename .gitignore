@@ -1,0 +1,9 @@
+backend/.env
+frontend/.env
+backend/.venv/
+frontend/node_modules/
+backend/uploads/
+backend/digilocker.db
+__pycache__/
+*.pyc
+dist/

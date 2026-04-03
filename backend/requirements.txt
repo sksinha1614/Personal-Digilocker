@@ -10,3 +10,5 @@ pillow
 aiofiles
 PyJWT
 certifi
+gunicorn
+psycopg2-binary
